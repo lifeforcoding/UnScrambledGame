@@ -2,6 +2,7 @@ package com.example.android.unscramble.ui
 
 import com.example.android.unscramble.data.SCORE_INCREASE
 import com.example.android.unscramble.data.getUnscrambledWord
+import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
@@ -20,6 +21,18 @@ class GameViewModelTest {
 
         assertFalse(currentGameUiState.isGuessedWordWrong)
         assertEquals(SCORE_AFTER_FIRST_CORRECT_ANSWER, currentGameUiState.score)
+    }
+
+    @Test
+    fun gameViewModel_IncorrectGuess_ErrorFlagSet() {
+        val incorrectPlayerWord = "and"
+
+        viewModel.updateUserGuess(incorrectPlayerWord)
+        viewModel.checkUserGuess()
+        val currentGameUiState = viewModel.uiState.value
+
+        assertEquals(0, currentGameUiState.score)
+        assertTrue(currentGameUiState.isGuessedWordWrong)
     }
 
     companion object {
